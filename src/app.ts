@@ -21,7 +21,7 @@ app.register(fastifyEnv, {
   dotenv: true,
   schema,
 });
-
+app.register(cors, {});
 app.register(autoLoad, {
   dir: path.join(__dirname, "routes"),
 });
