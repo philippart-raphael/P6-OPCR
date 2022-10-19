@@ -14,6 +14,8 @@ dotenv.config();
 new Initialization();
 
 const app = Fastify({
+  ignoreTrailingSlash: true,
+  ignoreDuplicateSlashes: true,
   logger: false,
 });
 
