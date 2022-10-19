@@ -4,6 +4,7 @@ import fastifyEnv from "@fastify/env";
 import autoLoad from "@fastify/autoload";
 import { schema } from "./config/envSetup";
 import { setupDb } from "./config/dbSetup";
+import cors from "@fastify/cors";
 import dotenv from "dotenv";
 import path from "path";
 
@@ -13,7 +14,7 @@ dotenv.config();
 new Initialization();
 
 const app = Fastify({
-  logger: true,
+  logger: false,
 });
 
 app.register(fastifyEnv, {

@@ -5,7 +5,7 @@ export default class Initialization {
 
   constructor() {
     if (!process.env.DIR_UPLOADS) {
-      console.error("DIR_UPLOADS is not defined in environment file !");
+      console.error("{ DIR_UPLOADS } is not defined in environment file !");
       process.exit(1);
     }
 
@@ -17,7 +17,12 @@ export default class Initialization {
 
   private async initialize(): Promise<void> {
     if (!await this.exists()) {
-      await fsPromises.mkdir(this.path);
+      try {
+        await fsPromises.mkdir(this.path);
+      } catch (err) {
+        console.error(`Cannot create uploads folder !: ${err}`);
+        process.exit(1);
+      }
     }
   }
 
@@ -26,6 +31,7 @@ export default class Initialization {
       await fsPromises.access(this.path);
       return true;
     } catch {
+      console.log("Uploads folder does not exist !");
       return false;
     }
   }
