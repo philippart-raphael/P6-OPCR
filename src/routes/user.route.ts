@@ -1,14 +1,12 @@
-import { FastifyInstance } from "fastify";
+import express from "express";
+import {
+  loginController,
+  signupController,
+} from "../controllers/loginController";
 
-export default async (app: FastifyInstance) => {
-  app.post("/login", (req, res) => {
-    console.log('Login: ', req.body);
-    res.send({ login: true });
-  });
-  app.post("/signup", (req, res) => {
-    console.log('Signup: ', req.body);
-    res.send({ signup: true });
-  });
-};
+const Router = express.Router();
 
-export const autoPrefix = "/api/auth";
+Router.post("/login", loginController);
+Router.post("/signup", signupController);
+
+export default Router;

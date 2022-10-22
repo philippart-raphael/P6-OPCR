@@ -1,10 +1,8 @@
 import Initialization from "./start/Initialization";
-import Fastify from "fastify";
-import fastifyEnv from "@fastify/env";
-import autoLoad from "@fastify/autoload";
-import { schema } from "./config/envSetup";
 import { setupDb } from "./config/dbSetup";
-import cors from "@fastify/cors";
+import RouterUser from "./routes/user.route";
+import cors from "cors";
+import express from "express";
 import dotenv from "dotenv";
 import path from "path";
 
@@ -13,33 +11,32 @@ dotenv.config();
 // Initialization of the application for Create Uploads Folder
 new Initialization();
 
-const app = Fastify({
-  ignoreTrailingSlash: true,
-  ignoreDuplicateSlashes: true,
-  logger: false,
-});
+// Instanciation of the express application
+const app = express();
 
-app.register(fastifyEnv, {
-  dotenv: true,
-  schema,
-});
-app.register(cors, {});
-app.register(autoLoad, {
-  dir: path.join(__dirname, "routes"),
-});
+const corsOptions = {
+  origin: "*",
+};
 
-app.ready(async (err) => {
-  if (err) app.log.error(err);
+app.use(express.json());
+app.use(cors(corsOptions));
+// Make All Routes
+app.use("/api/auth/", RouterUser);
 
+// Connexion to the database
+(async () => {
   try {
-    await setupDb(app.config.DB_HOST);
-
-    await app.listen({
-      port: app.config.API_PORT,
-      host: app.config.API_HOST,
-    });
-  } catch (err) {
-    app.log.error(err);
-    process.exit(1);
+    await setupDb((<number | unknown>process.env.MONGO_URI_HOST) as string);
+  } catch (e) {
+    console.error(e);
   }
-});
+})();
+
+if (<number | unknown>process.env.API_PORT) {
+  app.listen((<number | unknown>process.env.API_PORT) as string, () =>
+    console.log(
+      ("API is running on port " +
+        <number | unknown>process.env.API_PORT) as string
+    )
+  );
+}

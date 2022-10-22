@@ -16,7 +16,7 @@ export default class Initialization {
   }
 
   private async initialize(): Promise<void> {
-    if (!await this.exists()) {
+    if (!(await this.exists())) {
       try {
         await fsPromises.mkdir(this.path);
       } catch (err) {
