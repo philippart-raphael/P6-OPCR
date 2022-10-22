@@ -10,22 +10,15 @@ import UserValidator from "../validators/UserValidator";
 import UserSchema from "../models/UserSchema";
 
 export const signupController = async (req: Request, res: Response) => {
-  const userValid: UserValidator = new UserValidator(
-    req.body as UserSchemaType
-  );
+  const userValid: UserValidator = new UserValidator(<UserSchemaType>req.body);
 
   if (userValid.email === true && userValid.password === true) {
     try {
       req.body.password = await hashPassword(req.body.password);
       const user: HydratedDocument<UserSchemaType> = new UserSchema(req.body);
 
-      try {
-        await user.save();
-        res.status(201).json({ message: "User registered !" });
-      } catch (error) {
-        console.error(error);
-        res.status(500).json({ error });
-      }
+      await user.save();
+      res.status(201).json({ message: "User registered !" });
     } catch (error) {
       console.error(error);
       res.status(400).json({ message: "Bad request" });
@@ -36,9 +29,7 @@ export const signupController = async (req: Request, res: Response) => {
 };
 
 export const loginController = async (req: Request, res: Response) => {
-  const userValid: UserValidator = new UserValidator(
-    req.body as UserSchemaType
-  );
+  const userValid: UserValidator = new UserValidator(<UserSchemaType>req.body);
 
   if (userValid.email === true && userValid.password === true) {
     try {

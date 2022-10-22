@@ -5,7 +5,7 @@ export async function setupDb(host: string) {
     await mongoose.connect(host);
     console.log("Database successfully connected");
   } catch (e) {
-    console.log("Cannot provide the mongo database");
+    console.error("Cannot provide the mongo database");
     throw e;
   }
 }
