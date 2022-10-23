@@ -4,7 +4,7 @@ import { MyJwtPayload } from "~/services/JsonWebToken.type";
 export default class JsonWebToken {
   static async sign(
     payload: MyJwtPayload,
-    options: SignOptions,
+    options: SignOptions
   ): Promise<MyJwtPayload | string | undefined> {
     try {
       return sign(payload, <string>process.env.SECRET_JWT, options);

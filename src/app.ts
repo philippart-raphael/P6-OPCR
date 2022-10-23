@@ -1,9 +1,8 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
-import * as path from "path";
+import path from "path";
 import { createServer } from "http";
-import { fileURLToPath } from "url";
 import Initialization from "./start/Initialization";
 import { setupDb } from "./config/dbSetup";
 import RouterUser from "./routes/user.route";
@@ -12,13 +11,18 @@ import RouterSauce from "./routes/sauce.route";
 dotenv.config();
 
 // Control ENV VARIABLES
-const errorsENVMessage = ' is not defined in your .env file, { .env.example } is a template';
+const errorsENVMessage =
+  " is not defined in your .env file, { .env.example } is a template";
 
 try {
-  if (!process.env.UPLOADS_DIR) console.error('ERROR: UPLOADS_DIR' + errorsENVMessage);
-  if (!process.env.API_PORT) console.error('ERROR: API_PORT' + errorsENVMessage);
-  if (!process.env.MONGO_URI) console.error('ERROR: MONGO_URI' + errorsENVMessage);
-  if (!process.env.SECRET_JWT) console.error('ERROR: SECRET_JWT' + errorsENVMessage);
+  if (!process.env.UPLOADS_DIR)
+    console.error("ERROR: UPLOADS_DIR" + errorsENVMessage);
+  if (!process.env.API_PORT)
+    console.error("ERROR: API_PORT" + errorsENVMessage);
+  if (!process.env.MONGO_URI)
+    console.error("ERROR: MONGO_URI" + errorsENVMessage);
+  if (!process.env.SECRET_JWT)
+    console.error("ERROR: SECRET_JWT" + errorsENVMessage);
 } catch (error) {
   console.error(error);
   process.exit(1);
@@ -58,6 +62,6 @@ app.use("/api", RouterSauce);
 const server = createServer(app);
 server.listen(<number | unknown>process.env.API_PORT, () =>
   console.log(
-    "API is running on port " + <number | unknown>process.env.API_PORT,
-  ),
+    "API is running on port " + <number | unknown>process.env.API_PORT
+  )
 );

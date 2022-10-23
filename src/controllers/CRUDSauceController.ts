@@ -4,7 +4,10 @@ import { SauceSchemaType } from "../models/SauceSchema.type";
 import { AuthenticatorTypeRequest } from "../middleware/authenticator.type";
 import SauceSchema from "../models/SauceSchema";
 
-export const createSauceController = async (req: AuthenticatorTypeRequest, res: Response) => {
+export const createSauceController = async (
+  req: AuthenticatorTypeRequest,
+  res: Response
+) => {
   try {
     const sauce = JSON.parse(req.body.sauce);
     const file: Express.Multer.File = req.file!;
@@ -39,4 +42,4 @@ export const readAllSauceController = async (req: Request, res: Response) => {
     console.error(error);
     res.status(500).json({ message: error });
   }
-}
+};

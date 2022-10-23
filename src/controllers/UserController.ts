@@ -53,10 +53,11 @@ export const loginController = async (req: Request, res: Response) => {
           return;
         }
 
-        const JWTToken: MyJwtPayload | string | undefined = await JsonWebToken.sign(
-          { userId: userInDatabase._id },
-          { expiresIn: "24h" }
-        );
+        const JWTToken: MyJwtPayload | string | undefined =
+          await JsonWebToken.sign(
+            { userId: userInDatabase._id },
+            { expiresIn: "24h" }
+          );
         res.status(200).json({ userId: userInDatabase._id, token: JWTToken });
       }
     } catch (error) {
