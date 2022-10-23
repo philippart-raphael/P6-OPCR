@@ -7,7 +7,7 @@ export default class Initialization {
     this.path = process.env.UPLOADS_DIR!;
     this.initialize()
       .then()
-      .catch((err) => console.log(err));
+      .catch((err) => console.error(err));
   }
 
   private async initialize(): Promise<void> {
@@ -26,7 +26,7 @@ export default class Initialization {
       await fsPromises.access(this.path);
       return true;
     } catch {
-      console.log("Uploads folder does not exist !");
+      console.error("Uploads folder does not exist !");
       return false;
     }
   }
