@@ -46,7 +46,7 @@ export default class LikeControllerActions {
     return SauceSchema.updateOne(
       { _id: this.sauceId },
       {
-        $inc: { likes: this.like },
+        $inc: { likes: 1 },
         $push: { usersLiked: this.userId },
         _id: this.sauceId,
       }
@@ -57,7 +57,7 @@ export default class LikeControllerActions {
     return SauceSchema.updateOne(
       { _id: this.sauceId },
       {
-        $inc: { dislikes: this.like },
+        $inc: { dislikes: 1 },
         $push: { usersDisliked: this.userId },
         _id: this.sauceId,
       }
@@ -68,7 +68,7 @@ export default class LikeControllerActions {
     return SauceSchema.updateOne(
       { _id: this.sauceId },
       {
-        $inc: { likes: this.like },
+        $inc: { likes: -1 },
         $pull: { usersLiked: this.userId },
         _id: this.sauceId,
       }
@@ -79,7 +79,7 @@ export default class LikeControllerActions {
     return SauceSchema.updateOne(
       { _id: this.sauceId },
       {
-        $inc: { dislikes: this.like },
+        $inc: { dislikes: -1 },
         $pull: { usersDisliked: this.userId },
         _id: this.sauceId,
       }

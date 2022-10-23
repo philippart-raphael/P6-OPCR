@@ -7,7 +7,7 @@
     "lint": "eslint src --fix",
     "dev": "nodemon --watch src -e js,ts,json --exec \"ts-node --project tsconfig.json src/app\"",
     "build": "npm run lint && tsc -p tsconfig.json",
-    "prod": "node dist/app.js"
+    "prod": "npm run build && node dist/app.js"
   },
   "repository": {
     "type": "git",
