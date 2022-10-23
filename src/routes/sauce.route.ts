@@ -7,6 +7,7 @@ import {
   deleteSauceController,
 } from "../controllers/CRUDSauceController";
 import { authenticator } from "../middleware/authenticator";
+import { likeController } from "../controllers/LikeController";
 import multerConfig from "../middleware/multerConfig";
 
 const RouterSauce: Router = express.Router();
@@ -21,5 +22,6 @@ RouterSauce.put(
   updateSauceController
 );
 RouterSauce.delete("/sauces/:idSauce", authenticator, deleteSauceController);
+RouterSauce.post("/sauces/:idSauce/like", authenticator, likeController);
 
 export default RouterSauce;
