@@ -1,9 +1,10 @@
 import { Request, Response } from "express";
 import { HydratedDocument } from "mongoose";
 import { SauceSchemaType } from "../models/SauceSchema.type";
+import { AuthenticatorTypeRequest } from "../middleware/authenticator.type";
 import SauceSchema from "../models/SauceSchema";
 
-export const createSauceController = async (req: Request, res: Response) => {
+export const createSauceController = async (req: AuthenticatorTypeRequest, res: Response) => {
   try {
     const sauce = JSON.parse(req.body.sauce);
     const file: Express.Multer.File = req.file!;
@@ -11,6 +12,7 @@ export const createSauceController = async (req: Request, res: Response) => {
 
     const sauceForDataBAse: HydratedDocument<SauceSchemaType> =
       await new SauceSchema({
+        userId: req.authenticator!.userId,
         ...sauce,
         imageUrl: `${req.protocol}://${req.get("host")}/uploads/${
           file.filename
@@ -19,8 +21,6 @@ export const createSauceController = async (req: Request, res: Response) => {
         dislikes: 0,
         usersLiked: [],
         usersDisliked: [],
-        // TODO Creation du middleware pour l'authentification'
-        userId: "req.auth.userId",
       });
 
     await sauceForDataBAse.save();
@@ -30,3 +30,13 @@ export const createSauceController = async (req: Request, res: Response) => {
     res.status(500).json({ message: error });
   }
 };
+
+export const readAllSauceController = async (req: Request, res: Response) => {
+  try {
+    const allSauces = await SauceSchema.find();
+    res.status(200).json(allSauces);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: error });
+  }
+}

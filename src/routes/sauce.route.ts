@@ -1,9 +1,11 @@
 import express, { Router } from "express";
-import { createSauceController } from "../controllers/createSauceController";
+import { createSauceController, readAllSauceController } from "../controllers/createSauceController";
+import { authenticator } from "../middleware/authenticator";
 import multerConfig from "../middleware/multerConfig";
 
 const RouterSauce: Router = express.Router();
 
-RouterSauce.post("/sauces", multerConfig, createSauceController);
+RouterSauce.post("/sauces", authenticator, multerConfig, createSauceController);
+RouterSauce.get("/sauces", authenticator, readAllSauceController);
 
 export default RouterSauce;

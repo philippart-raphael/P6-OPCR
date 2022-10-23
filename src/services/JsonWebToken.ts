@@ -1,17 +1,13 @@
-import jsonwebtoken, { JwtPayload } from "jsonwebtoken";
-import * as Mongoose from "mongoose";
-
-export interface MyJwtPayload {
-  userId: Mongoose.ObjectId;
-}
+import { JwtPayload, SignOptions, sign, verify } from "jsonwebtoken";
+import { MyJwtPayload } from "~/services/JsonWebToken.type";
 
 export default class JsonWebToken {
   static async sign(
     payload: MyJwtPayload,
-    options: jsonwebtoken.SignOptions
-  ): Promise<string | undefined> {
+    options: SignOptions,
+  ): Promise<MyJwtPayload | string | undefined> {
     try {
-      return jsonwebtoken.sign(payload, <string>process.env.SECRETJWT, options);
+      return sign(payload, <string>process.env.SECRET_JWT, options);
     } catch (error) {
       console.error(error);
     }
@@ -19,7 +15,7 @@ export default class JsonWebToken {
 
   static async verify(token: string): Promise<JwtPayload | string | undefined> {
     try {
-      return jsonwebtoken.verify(token, <string>process.env.SECRETJWT);
+      return verify(token, <string>process.env.SECRET_JWT);
     } catch (error) {
       console.error(error);
     }

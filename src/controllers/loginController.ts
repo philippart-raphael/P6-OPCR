@@ -7,6 +7,7 @@ import {
 import { hashPassword, verifyPassword } from "../services/PasswordHashing";
 import JsonWebToken from "../services/JsonWebToken";
 import UserValidator from "../validators/UserValidator";
+import { MyJwtPayload } from "../services/JsonWebToken.type";
 import UserSchema from "../models/UserSchema";
 
 export const signupController = async (req: Request, res: Response) => {
@@ -52,7 +53,7 @@ export const loginController = async (req: Request, res: Response) => {
           return;
         }
 
-        const JWTToken: string | undefined = await JsonWebToken.sign(
+        const JWTToken: MyJwtPayload | string | undefined = await JsonWebToken.sign(
           { userId: userInDatabase._id },
           { expiresIn: "24h" }
         );
@@ -63,7 +64,6 @@ export const loginController = async (req: Request, res: Response) => {
       res.status(400).json({ message: "Bad request" });
     }
   } else {
-    console.log(userValid);
     res.status(400).json({ message: "Bad request" });
   }
 };

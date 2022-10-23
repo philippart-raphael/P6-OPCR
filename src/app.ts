@@ -41,6 +41,7 @@ const corsOptions = {
 app.use(express.json());
 app.use(cors(corsOptions));
 // Make All Routes
+app.use(express.static(path.join(path.dirname(__dirname))));
 app.use("/api/auth", RouterUser);
 app.use("/api", RouterSauce);
 
