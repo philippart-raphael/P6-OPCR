@@ -11,6 +11,19 @@ import RouterSauce from "./routes/sauce.route";
 
 dotenv.config();
 
+// Control ENV VARIABLES
+const errorsENVMessage = ' is not defined in your .env file, { .env.example } is a template';
+
+try {
+  if (!process.env.UPLOADS_DIR) console.error('ERROR: UPLOADS_DIR' + errorsENVMessage);
+  if (!process.env.API_PORT) console.error('ERROR: API_PORT' + errorsENVMessage);
+  if (!process.env.MONGO_URI) console.error('ERROR: MONGO_URI' + errorsENVMessage);
+  if (!process.env.SECRET_JWT) console.error('ERROR: SECRET_JWT' + errorsENVMessage);
+} catch (error) {
+  console.error(error);
+  process.exit(1);
+}
+
 // Initialization of the application for Create Uploads Folder
 new Initialization();
 
@@ -34,18 +47,16 @@ app.use("/api", RouterSauce);
 // Connexion to the database
 (async () => {
   try {
-    await setupDb(<string>process.env.MONGO_URI_HOST);
+    await setupDb(<string>process.env.MONGO_URI);
   } catch (e) {
     console.error(e);
   }
 })();
 
+// Create and listen the API server
 const server = createServer(app);
-
-if (<number | unknown>process.env.API_PORT) {
-  server.listen(<number | unknown>process.env.API_PORT, () =>
-    console.log(
-      "API is running on port " + <number | unknown>process.env.API_PORT
-    )
-  );
-}
+server.listen(<number | unknown>process.env.API_PORT, () =>
+  console.log(
+    "API is running on port " + <number | unknown>process.env.API_PORT,
+  ),
+);
