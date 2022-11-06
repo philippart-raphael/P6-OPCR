@@ -3,6 +3,7 @@ import { HydratedDocument } from "mongoose";
 import { SauceSchemaType } from "../models/SauceSchema.type";
 import { AuthenticatorTypeRequest } from "../middleware/authenticator.type";
 import DeleteUploadFile from "../services/DeleteUploadFile";
+import UserAuthenticatorValidator from "../validators/UserAuthenticatorValidator";
 import SauceSchema from "../models/SauceSchema";
 
 export const createSauceController = async (
@@ -67,6 +68,10 @@ export const updateSauceController = async (
   req: AuthenticatorTypeRequest,
   res: Response
 ) => {
+  if (!UserAuthenticatorValidator.validate(req, req.body.userId)) {
+    return res.status(401).json({ message: "Unauthorized" });
+  }
+
   let body;
 
   try {
@@ -99,6 +104,10 @@ export const updateSauceController = async (
 };
 
 export const deleteSauceController = async (req: Request, res: Response) => {
+  if (!UserAuthenticatorValidator.validate(req, req.body.userId)) {
+    return res.status(401).json({ message: "Unauthorized" });
+  }
+
   try {
     const sauce: HydratedDocument<any> = await SauceSchema.findById(
       req.params.idSauce
