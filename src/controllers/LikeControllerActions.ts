@@ -26,20 +26,28 @@ export default class LikeControllerActions {
   async action() {
     switch (this.like) {
       case 1:
-        await this.addLike();
+        if (!this.validate(this.usersLikedSauce)) {
+          await this.addLike();
+        }
         break;
       case -1:
-        await this.addDisLike();
+        if (!this.validate(this.usersDislikedSauce)) {
+          await this.addDisLike();
+        }
         break;
       case 0:
-        if (this.usersLikedSauce.includes(this.userId.toString())) {
+        if (this.validate(this.usersLikedSauce)) {
           await this.deleteLike();
         }
-        if (this.usersDislikedSauce.includes(this.userId.toString())) {
+        if (this.validate(this.usersDislikedSauce)) {
           await this.deleteDisLike();
         }
         break;
     }
+  }
+
+  validate(array: string[]) {
+    return array.includes(this.userId.toString());
   }
 
   async addLike() {
