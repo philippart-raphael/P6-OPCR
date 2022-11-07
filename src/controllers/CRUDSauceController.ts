@@ -104,10 +104,6 @@ export const updateSauceController = async (
 };
 
 export const deleteSauceController = async (req: Request, res: Response) => {
-  if (!UserAuthenticatorValidator.validate(req, req.body.userId)) {
-    return res.status(401).json({ message: "Unauthorized" });
-  }
-
   try {
     const sauce: HydratedDocument<any> = await SauceSchema.findById(
       req.params.idSauce
